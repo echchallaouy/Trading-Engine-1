@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FillsCS\FillsCS.csproj" />
+    <ProjectReference Include="..\OrderbookCS\OrderbookCS.csproj" />
     <ProjectReference Include="..\OrdersCS\OrdersCS.csproj" />
   </ItemGroup>
 

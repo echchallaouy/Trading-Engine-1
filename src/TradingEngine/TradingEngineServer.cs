@@ -35,71 +35,59 @@ namespace TradingEngineServer.Core
 
         }
 
-        public async Task ProcessOrderAsync(Order order, TradingServerContext context)
+        public Task<ExchangeResult> ProcessOrderAsync(Order order)
         {
             _textLogger.Information(nameof(TradingEngineServer), $"Handling NewOrder: {order}");
             if (_exchange.TryGetOrderbook(order.SecurityId, out var orderbook))
             {
                 if (RejectGenerator.TryRejectNewOrder(order, orderbook, out var rejection))
                 {
-                    await context.TradingServer.PublishRejectAsync(rejection, context.CancellationToken);
+                    return Task.FromResult(ExchangeResult.CreateExchangeResult(rejection));
                 }
                 else
                 {
                     orderbook.AddOrder(order);
                     var matchResults = orderbook.Match();
-                    await context.TradingServer.PublishFillsAsync(matchResults.Fills, context.CancellationToken);
+                    return Task.FromResult(ExchangeResult.CreateExchangeResult(matchResults.Fills));
                 }
             }
-            else
-            {
-                await context.TradingServer.PublishRejectAsync(RejectionCreator.GenerateOrderCoreReject(order, RejectionReason.InstrumentNotFound), 
-                    context.CancellationToken);
-            }
+            return Task.FromResult(ExchangeResult.CreateExchangeResult());
         }
 
-        public async Task ProcessOrderAsync(ModifyOrder modifyOrder, TradingServerContext context)
+        public Task<ExchangeResult> ProcessOrderAsync(ModifyOrder modifyOrder)
         {
             _textLogger.Information(nameof(TradingEngineServer), $"Handling ModifyOrder: {modifyOrder}");
             if (_exchange.TryGetOrderbook(modifyOrder.SecurityId, out var orderbook))
             {
                 if (RejectGenerator.TryRejectModifyOrder(modifyOrder, orderbook, out var rejection))
                 {
-                    await context.TradingServer.PublishRejectAsync(rejection, context.CancellationToken);
+                    return Task.FromResult(ExchangeResult.CreateExchangeResult(rejection));
                 }
                 else
                 {
                     orderbook.ChangeOrder(modifyOrder);
                     var matchResults = orderbook.Match();
-                    await context.TradingServer.PublishFillsAsync(matchResults.Fills, context.CancellationToken);
+                    return Task.FromResult(ExchangeResult.CreateExchangeResult(matchResults.Fills));
                 }
             }
-            else
-            {
-                await context.TradingServer.PublishRejectAsync(RejectionCreator.GenerateOrderCoreReject(modifyOrder, RejectionReason.InstrumentNotFound),
-                    context.CancellationToken);
-            }
+            return Task.FromResult(ExchangeResult.CreateExchangeResult());
         }
 
-        public async Task ProcessOrderAsync(CancelOrder cancelOrder, TradingServerContext context)
+        public Task<ExchangeResult> ProcessOrderAsync(CancelOrder cancelOrder)
         {
             _textLogger.Information(nameof(TradingEngineServer), $"Handling CancelOrder: {cancelOrder}");
             if (_exchange.TryGetOrderbook(cancelOrder.SecurityId, out var orderbook))
             {
                 if (RejectGenerator.TryRejectCancelOrder(cancelOrder, orderbook, out var rejection))
                 {
-                    await context.TradingServer.PublishRejectAsync(rejection, context.CancellationToken);
+                    return Task.FromResult(ExchangeResult.CreateExchangeResult(rejection));
                 }
                 else
                 {
                     orderbook.RemoveOrder(cancelOrder);
                 }
             }
-            else
-            {
-                await context.TradingServer.PublishRejectAsync(RejectionCreator.GenerateOrderCoreReject(cancelOrder, RejectionReason.InstrumentNotFound),
-                    context.CancellationToken);
-            }
+            return Task.FromResult(ExchangeResult.CreateExchangeResult());
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
