@@ -21,7 +21,18 @@ namespace TradingEngineServer.Orderbook
 
         public static bool TryRejectModifyOrder(ModifyOrder modifyOrder, IReadOnlyOrderbook orderbook, out Rejection rejection)
         {
-            if (!orderbook.ContainsOrder(modifyOrder.OrderId))
+            var modifyOrderType = orderbook.GetModifyOrderType(modifyOrder);
+            if (modifyOrderType == ModifyOrderType.NoChange)
+            {
+                rejection = RejectionCreator.GenerateOrderCoreReject(modifyOrder, RejectionReason.ModifyOrderDoesntModifyAnything);
+                return true;
+            }
+            else if (modifyOrderType == ModifyOrderType.Unknown)
+            {
+                rejection = RejectionCreator.GenerateOrderCoreReject(modifyOrder, RejectionReason.OrderNotFound);
+                return true;
+            }
+            else if (!orderbook.ContainsOrder(modifyOrder.OrderId))
             {
                 rejection = RejectionCreator.GenerateOrderCoreReject(modifyOrder, RejectionReason.OrderNotFound);
                 return true;
@@ -34,6 +45,7 @@ namespace TradingEngineServer.Orderbook
                     return true;
                 }
             }
+
             rejection = null;
             return false;
         }

@@ -9,7 +9,10 @@ namespace TradingEngineServer.Rejects
         Unknown,
         OrderNotFound,
         OrderIdAlreadyPresent,
+        OrderbookNotFound,
         InstrumentNotFound,
         AttemptingToModifyWrongSide,
+        ModifyOrderDoesntModifyAnything,
+
     }
 }

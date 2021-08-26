@@ -51,7 +51,7 @@ namespace TradingEngineServer.Core
                     return Task.FromResult(ExchangeResult.CreateExchangeResult(matchResults.Fills));
                 }
             }
-            return Task.FromResult(ExchangeResult.CreateExchangeResult());
+            else return Task.FromResult(ExchangeResult.CreateExchangeResult(RejectionCreator.GenerateOrderCoreReject(order, RejectionReason.OrderbookNotFound)));
         }
 
         public Task<ExchangeResult> ProcessOrderAsync(ModifyOrder modifyOrder)
@@ -70,14 +70,14 @@ namespace TradingEngineServer.Core
                     return Task.FromResult(ExchangeResult.CreateExchangeResult(matchResults.Fills));
                 }
             }
-            return Task.FromResult(ExchangeResult.CreateExchangeResult());
+            else return Task.FromResult(ExchangeResult.CreateExchangeResult(RejectionCreator.GenerateOrderCoreReject(modifyOrder, RejectionReason.OrderbookNotFound)));
         }
 
         public Task<ExchangeResult> ProcessOrderAsync(CancelOrder cancelOrder)
         {
             _textLogger.Information(nameof(TradingEngineServer), $"Handling CancelOrder: {cancelOrder}");
             if (_exchange.TryGetOrderbook(cancelOrder.SecurityId, out var orderbook))
-            {
+            { 
                 if (RejectGenerator.TryRejectCancelOrder(cancelOrder, orderbook, out var rejection))
                 {
                     return Task.FromResult(ExchangeResult.CreateExchangeResult(rejection));
@@ -85,9 +85,10 @@ namespace TradingEngineServer.Core
                 else
                 {
                     orderbook.RemoveOrder(cancelOrder);
+                    return Task.FromResult(ExchangeResult.CreateExchangeResult());
                 }
             }
-            return Task.FromResult(ExchangeResult.CreateExchangeResult());
+            else return Task.FromResult(ExchangeResult.CreateExchangeResult(RejectionCreator.GenerateOrderCoreReject(cancelOrder, RejectionReason.OrderbookNotFound)));
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
