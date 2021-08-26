@@ -64,6 +64,12 @@ namespace TradingEngineServer.Orderbook
                 return _orderbook.GetSpread();
         }
 
+        public ModifyOrderType GetModifyOrderType(ModifyOrder modifyOrder)
+        {
+            lock (_lock)
+                return _orderbook.GetModifyOrderType(modifyOrder);
+        }
+
         public MatchResult Match()
         {
             lock (_lock)
@@ -80,5 +86,7 @@ namespace TradingEngineServer.Orderbook
                 return matchResult;
             }
         }
+
+
     }
 }

@@ -67,6 +67,30 @@ namespace TradingEngineServer.Orderbook
             return false;
         }
 
+        public ModifyOrderType GetModifyOrderType(ModifyOrder modifyOrder)
+        {
+            if (_orders.TryGetValue(modifyOrder.OrderId, out var entry))
+            {
+                if (entry.Current.Price != modifyOrder.Price && entry.Current.InitialQuantity != modifyOrder.Quantity)
+                {
+                    return ModifyOrderType.PriceAndQuantity;
+                }
+                else if (entry.Current.Price != modifyOrder.Price)
+                {
+                    return ModifyOrderType.Price;
+                }
+                else if (entry.Current.InitialQuantity != modifyOrder.Quantity)
+                {
+                    return ModifyOrderType.Quantity;
+                }
+                else
+                {
+                    return ModifyOrderType.NoChange;
+                }
+            }
+            return ModifyOrderType.Unknown;
+        }
+
         public int Count
         {
             get

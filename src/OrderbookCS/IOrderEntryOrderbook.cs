@@ -9,6 +9,7 @@ namespace TradingEngineServer.Orderbook
     {
         bool ContainsOrder(long orderId);
         bool TryGetOrder(long orderId, out Order order);
+        ModifyOrderType GetModifyOrderType(ModifyOrder modifyOrder);
         OrderbookSpread GetSpread();
         int Count { get; }
     }
