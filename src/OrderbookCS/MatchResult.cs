@@ -41,27 +41,27 @@ namespace TradingEngineServer.Orderbook
             _fills.Add(fill);
         }
 
-        public IReadOnlyList<Trade> Trades
+        public List<Trade> Trades
         {
             get
             {
-                return new ReadOnlyCollection<Trade>(_trades);
+                return new List<Trade>(_trades);
             }
         }
 
-        public IReadOnlyList<Fill> Fills
+        public List<Fill> Fills
         {
             get
             {
-                return new ReadOnlyCollection<Fill>(_fills);
+                return new List<Fill>(_fills);
             }
         }
 
-        public IReadOnlyList<IncrementalOrderbookUpdate> IncrementalOrderbookUpdates
+        public List<IncrementalOrderbookUpdate> IncrementalOrderbookUpdates
         {
             get
             {
-                return new ReadOnlyCollection<IncrementalOrderbookUpdate>(_orderbookUpdates);
+                return new List<IncrementalOrderbookUpdate>(_orderbookUpdates);
             }
         }
 

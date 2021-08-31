@@ -18,6 +18,8 @@ namespace TradingEngineServer.Orderbook
         void AddOrder(Order order);
         void ChangeOrder(ModifyOrder modifyOrder);
         void RemoveOrder(CancelOrder cancelOrder);
+        void CancelAll(string username);
+        void CancelAll(List<long> ids);
     }
 
     public interface IRetrievalOrderbook : IOrderEntryOrderbook

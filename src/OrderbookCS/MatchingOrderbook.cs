@@ -70,6 +70,18 @@ namespace TradingEngineServer.Orderbook
                 return _orderbook.GetModifyOrderType(modifyOrder);
         }
 
+        public void CancelAll(string username)
+        {
+            lock (_lock)
+                _orderbook.CancelAll(username);
+        }
+
+        public void CancelAll(List<long> ids)
+        {
+            lock (_lock)
+                _orderbook.CancelAll(ids);
+        }
+
         public MatchResult Match()
         {
             lock (_lock)
@@ -86,7 +98,5 @@ namespace TradingEngineServer.Orderbook
                 return matchResult;
             }
         }
-
-
     }
 }

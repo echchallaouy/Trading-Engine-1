@@ -13,6 +13,5 @@ namespace TradingEngineServer.Rejects
         InstrumentNotFound,
         AttemptingToModifyWrongSide,
         ModifyOrderDoesntModifyAnything,
-
     }
 }

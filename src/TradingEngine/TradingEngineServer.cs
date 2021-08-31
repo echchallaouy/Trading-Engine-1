@@ -12,14 +12,15 @@ using System.Threading.Tasks;
 using TradingEngineServer.Core.Configuration;
 using TradingEngineServer.Logging;
 using TradingEngineServer.Exchange;
-using TradingEngineServer.Server;
+
 using TradingEngineServer.Orders;
 using TradingEngineServer.Orderbook;
 using TradingEngineServer.Rejects;
+using TradingEngineServer.OrderEntryCommunication;
 
 namespace TradingEngineServer.Core
 {
-    class TradingEngineServer : BackgroundService, ITradingEngine, ITradingUpdateProcessor
+    class TradingEngineServer : BackgroundService, ITradingEngine
     {
         private readonly TradingEngineServerConfiguration _engineConfiguration;
         private readonly ITextLogger _textLogger;
@@ -95,9 +96,7 @@ namespace TradingEngineServer.Core
         {
             _textLogger.Information(nameof(TradingEngineServer), $"Starting Trading Engine");
             while (!stoppingToken.IsCancellationRequested)
-            {
-
-            }
+            { }
             _textLogger.Information(nameof(TradingEngineServer), $"Stopping Trading Engine");
             return Task.CompletedTask;
         }

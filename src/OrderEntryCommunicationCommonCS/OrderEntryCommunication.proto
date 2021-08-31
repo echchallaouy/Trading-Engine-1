@@ -1,0 +1,134 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package Eden.Proto.OrderEntry;
+
+service OrderEntryService
+{
+    rpc OrderEntry(stream OrderEntryRequest) returns (stream OrderEntryResponse) { }
+}
+
+// INBOUND - From Client //
+
+message OrderEntryRequest
+{
+    oneof OrderEntryType
+    {
+        OrderEntryNewOrder NewOrder = 1; 
+        OrderEntryModifyOrder ModifyOrder = 2;
+        OrderEntryCancelOrder CancelOrder = 3;
+    }
+}
+
+message OrderEntryOrderCore
+{
+    int64 OrderId = 1;
+    int32 SecurityId = 2;
+    string Username = 3;
+}
+
+message OrderEntryNewOrder
+{
+    OrderEntryOrderCore OrderCore = 1;
+    uint32 Quantity = 2;
+    bool IsBuySide = 3;
+    int64 Price = 4;
+}
+
+message OrderEntryModifyOrder
+{
+    OrderEntryOrderCore OrderCore = 1;
+    uint32 Quantity = 2;
+    bool IsBuySide = 3;
+    int64 Price = 4;
+}
+
+message OrderEntryCancelOrder
+{
+    OrderEntryOrderCore OrderCore = 1;
+}
+
+message OrderEntryRejection
+{
+    enum OrderEntryRejectionReason
+    {
+        Unknown = 0;
+        OrderNotFound = 1;
+        OrderIdAlreadyPresent = 2;
+        OrderbookNotFound = 3;
+        InstrumentNotFound = 4;
+        AttemptingToModifyWrongSide = 5;
+        ModifyOrderDoesntModifyAnything = 6;
+    }
+
+    OrderEntryOrderCore OrderCore = 1;
+    OrderEntryRejectionReason RejectionReason = 2;
+}
+
+message OrderEntryResponse
+{
+    oneof OrderStatusType
+    {
+        OrderEntryNewOrderStatus NewOrderAcknowledgement = 1;
+        OrderEntryModifyOrderStatus ModifyOrderAcknowledgement = 2;
+        OrderEntryCancelOrderStatus CancelOrderAcknowledgement = 3;
+    }
+
+    oneof ResponseType
+    {
+        OrderEntryFill Fill = 4;
+        OrderEntryRejection Rejection = 5;
+    }
+}
+
+message OrderEntryNewOrderStatus
+{
+    google.protobuf.Timestamp CreationTime = 1;
+    OrderEntryOrderStatusCore OrderStatusCore = 2;
+    uint32 Quantity = 3;
+    bool IsBuySide = 4;
+    int64 Price = 5;
+}
+
+message OrderEntryModifyOrderStatus
+{
+    google.protobuf.Timestamp CreationTime = 1;
+    OrderEntryOrderStatusCore OrderStatusCore = 2;
+    uint32 Quantity = 3;
+    bool IsBuySide = 4;
+    int64 Price = 5;
+}
+
+message OrderEntryCancelOrderStatus
+{
+    google.protobuf.Timestamp CreationTime = 1;
+    OrderEntryOrderStatusCore OrderStatusCore = 2;
+}
+
+message OrderEntryOrderStatusCore
+{
+    int64 OrderId = 1;
+    int32 SecurityId = 2;
+    string Username = 3;
+}
+
+message OrderEntryFill
+{
+    enum OrderEntryFillAllocationAlgorithm
+    {
+        Unspecified = 0;
+        Fifo = 1;
+        Lifo = 2;
+        ProRata = 3;
+    }
+
+    google.protobuf.Timestamp EventTime = 1;
+    OrderEntryOrderStatusCore OrderStatusCore = 2;
+    bool IsCompleteFill = 3;
+    uint32 FillQuantity = 4;
+    int64 FillId = 5;
+    string ExecutionId = 6;
+    string FillExecutionId = 7;
+    OrderEntryFillAllocationAlgorithm AllocationAlgorithm = 8;
+}

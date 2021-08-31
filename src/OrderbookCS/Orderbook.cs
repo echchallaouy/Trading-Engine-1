@@ -177,6 +177,11 @@ namespace TradingEngineServer.Orderbook
             RemoveOrder(cancelOrder.OrderId, obe, internalBook);
         }
 
+        private static void RemoveOrder(long orderId, IDictionary<long, OrderbookEntry> internalBook)
+        {
+            RemoveOrder(orderId, internalBook[orderId], internalBook);
+        }
+
         private static void RemoveOrder(long orderId, OrderbookEntry obe, IDictionary<long, OrderbookEntry> internalBook)
         {
             // 1. Deal with location of OrderbookEntry within the linked list.
@@ -210,6 +215,21 @@ namespace TradingEngineServer.Orderbook
                 obe.ParentLimit.Tail = obe.Previous;
 
             internalBook.Remove(orderId);
+        }
+
+        public void CancelAll(string username)
+        {
+            // TODO: Improve this. It can be very slow.
+            // Get orders ids associated with a username.
+            var cancelOrders = _orders.Where(x => x.Value.Current.Username == username).Select(x => new CancelOrder(x.Value.Current));
+            foreach (var cancelOrder in cancelOrders)
+                RemoveOrder(cancelOrder);
+        }
+
+        public void CancelAll(List<long> ids)
+        {
+            foreach (var id in ids)
+                RemoveOrder(id, _orders);
         }
     }
 }

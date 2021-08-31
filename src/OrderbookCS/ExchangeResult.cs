@@ -25,7 +25,7 @@ namespace TradingEngineServer.Orderbook
             };
         }
 
-        public static ExchangeResult CreateExchangeResult(IReadOnlyList<Fill> fills)
+        public static ExchangeResult CreateExchangeResult(List<Fill> fills)
         {
             return new ExchangeResult()
             {
@@ -48,7 +48,7 @@ namespace TradingEngineServer.Orderbook
 
         // FIELDS // 
         public ExchangeInformationType ExchangeInformationType { get; private set; }
-        public IReadOnlyList<Fill> Fills { get; private set; }
+        public List<Fill> Fills { get; private set; }
         public Rejection Rejection { get; set; }
     }
 }
