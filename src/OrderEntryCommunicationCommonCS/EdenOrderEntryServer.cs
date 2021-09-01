@@ -61,19 +61,17 @@ namespace TradingEngineServer.OrderEntryCommunication
             await HandleResults(client, clientStore, results, token).ConfigureAwait(false);
         }
 
-        private static async Task HandleResults(OrderEntryServerClient client, ICache<string, OrderEntryServerClient> clientStore,
+        private static Task HandleResults(OrderEntryServerClient client, ICache<string, OrderEntryServerClient> clientStore,
             Orderbook.ExchangeResult results, CancellationToken token)
         {
             switch (results.ExchangeInformationType)
             {
                 case Orderbook.ExchangeInformationType.Rejection:
-                    await HandleRejection(client, results.Rejection, token).ConfigureAwait(false);
-                    break;
+                    return HandleRejection(client, results.Rejection, token);
                 case Orderbook.ExchangeInformationType.Fill:
-                    await HandleFill(clientStore, results.Fills, token).ConfigureAwait(false);
-                    break;
+                    return HandleFill(clientStore, results.Fills, token);
                 default:
-                    break;
+                    return Task.CompletedTask;
             }
         }
 
