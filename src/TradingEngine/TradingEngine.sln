@@ -33,7 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeCS", "..\ExchangeCS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonCS", "..\CommonCS\CommonCS.csproj", "{70D4E626-8314-4285-98AC-B3573D4F9244}"
 EndProject
+<<<<<<< HEAD
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderEntryCommunicationCS", "..\OrderEntryCommunicationCommonCS\OrderEntryCommunicationCS.csproj", "{EF817789-455C-415E-8ED5-D5312CE302AB}"
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingServerCS", "..\TradingServerCS\TradingServerCS.csproj", "{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}"
+>>>>>>> master
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,10 +101,17 @@ Global
 		{70D4E626-8314-4285-98AC-B3573D4F9244}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70D4E626-8314-4285-98AC-B3573D4F9244}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70D4E626-8314-4285-98AC-B3573D4F9244}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
 		{EF817789-455C-415E-8ED5-D5312CE302AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF817789-455C-415E-8ED5-D5312CE302AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF817789-455C-415E-8ED5-D5312CE302AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF817789-455C-415E-8ED5-D5312CE302AB}.Release|Any CPU.Build.0 = Release|Any CPU
+=======
+		{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> master
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
