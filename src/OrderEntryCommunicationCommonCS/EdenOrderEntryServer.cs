@@ -67,24 +67,32 @@ namespace TradingEngineServer.OrderEntryCommunication
             switch (results.ExchangeInformationType)
             {
                 case Orderbook.ExchangeInformationType.Rejection:
-                    await client.PublishRejectAsync(results.Rejection, token).ConfigureAwait(false);
+                    await HandleRejection(client, results.Rejection, token).ConfigureAwait(false);
                     break;
                 case Orderbook.ExchangeInformationType.Fill:
-                    {
-                        var publishFillTasks = results.Fills.Select(f =>
-                        {
-                            if (clientStore.TryGet(f.OrderBase.Username, out var fillClient))
-                            {
-                                return fillClient.PublishFillAsync(f, token);
-                            }
-                            return Task.CompletedTask;
-                        });
-                        await Task.WhenAll(publishFillTasks).ConfigureAwait(false);
-                    }
+                    await HandleFill(clientStore, results.Fills, token).ConfigureAwait(false);
                     break;
                 default:
                     break;
             }
+        }
+
+        private static Task HandleFill(ICache<string, OrderEntryServerClient> clientStore, List<Fills.Fill> fills, CancellationToken token)
+        {
+            var publishFillTasks = fills.Select(f =>
+            {
+                if (clientStore.TryGet(f.OrderBase.Username, out var fillClient))
+                {
+                    return fillClient.PublishFillAsync(f, token);
+                }
+                return Task.CompletedTask;
+            });
+            return Task.WhenAll(publishFillTasks);
+        }
+
+        private static Task HandleRejection(OrderEntryServerClient client, Rejects.Rejection rejection, CancellationToken token)
+        {
+            return client.PublishRejectAsync(rejection, token);
         }
 
         protected override async Task HandleClientDisconnectAsync(OrderEntryServerClient client)
