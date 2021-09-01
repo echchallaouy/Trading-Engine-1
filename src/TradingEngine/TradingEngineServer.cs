@@ -17,10 +17,12 @@ using TradingEngineServer.Orders;
 using TradingEngineServer.Orderbook;
 using TradingEngineServer.Rejects;
 using TradingEngineServer.OrderEntryCommunication;
+using System.Linq;
+using TradingEngineServer.Orders.OrderStatuses;
 
 namespace TradingEngineServer.Core
 {
-    class TradingEngineServer : BackgroundService, ITradingEngine
+    class TradingEngineServer : BackgroundService, ITradingEngine, ITradingUpdateProcessor
     {
         private readonly TradingEngineServerConfiguration _engineConfiguration;
         private readonly ITextLogger _textLogger;
@@ -34,6 +36,16 @@ namespace TradingEngineServer.Core
             _exchange = exchange ?? throw new ArgumentNullException(nameof(exchange));
             _textLogger = textLogger ?? throw new ArgumentNullException(nameof(textLogger));
 
+        }
+
+        public Task CancelAllAsync(List<IOrderStatus> orderStatuses)
+        {
+            _textLogger.Information(nameof(TradingEngineServer), $"Unsolicited cancel for all active orders: {string.Join(", ", orderStatuses.Select(x => x.OrderId))}");
+            var cancelTasks = orderStatuses.Select(x =>
+            {
+                return ProcessOrderAsync(new CancelOrder(x));
+            });
+            return Task.WhenAll(cancelTasks);
         }
 
         public Task<ExchangeResult> ProcessOrderAsync(Order order)

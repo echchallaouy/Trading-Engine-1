@@ -4,11 +4,24 @@ using System.Text;
 
 namespace TradingEngineServer.Orders.OrderStatuses
 {
-    public interface IOrderStatus
+    public interface IOrderStatus : IOrderCore
     {
         DateTime CreationTime { get; }
-        long OrderId { get; }
-        string Username { get; }
-        int SecurityId { get; }
     }
+
+    public interface IModifyOrderStatus : IOrderStatus
+    {
+
+    }
+
+    public interface INewOrderStatus : IOrderStatus
+    {
+
+    }
+
+    public interface ICancelOrderStatus : IOrderStatus
+    {
+
+    }
+
 }

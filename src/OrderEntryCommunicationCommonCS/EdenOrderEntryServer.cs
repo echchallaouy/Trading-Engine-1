@@ -17,8 +17,8 @@ namespace TradingEngineServer.OrderEntryCommunication
             _updateProcessor = tradingUpdateProcessor;
         }
 
-        protected override async Task ProcessSubscribeRequestAsync(OrderEntryRequest requestStream, string username, ICache<string, OrderEntryServerClient>
-             clientStore, CancellationToken token)
+        protected override async Task ProcessSubscribeRequestAsync(OrderEntryRequest requestStream, string username, 
+            ICache<string, OrderEntryServerClient> clientStore, CancellationToken token)
         {
             var client = clientStore.Get(username);
             switch (requestStream.OrderEntryTypeCase)

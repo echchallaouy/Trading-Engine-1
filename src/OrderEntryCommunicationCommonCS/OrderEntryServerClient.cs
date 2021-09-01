@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TradingEngineServer.Fills;
+using TradingEngineServer.Orders;
 using TradingEngineServer.Orders.OrderStatuses;
 using TradingEngineServer.Rejects;
 
@@ -44,7 +45,7 @@ namespace TradingEngineServer.OrderEntryCommunication
         {
             {
                 using var lck = await _activeOrdersLock.WriterLockAsync().ConfigureAwait(false);
-                _activeOrders.Add(newOrderStatus.OrderId);
+                _activeOrders.Add(newOrderStatus);
             }
 
             try
@@ -66,7 +67,7 @@ namespace TradingEngineServer.OrderEntryCommunication
         {
             {
                 using var lck = await _activeOrdersLock.WriterLockAsync().ConfigureAwait(false);
-                _activeOrders.Remove(cancelOrderStatus.OrderId);
+                _activeOrders.RemoveAll(x => x.OrderId == cancelOrderStatus.OrderId);
             }
 
             try
@@ -89,7 +90,7 @@ namespace TradingEngineServer.OrderEntryCommunication
             {
                 using var lck = await _activeOrdersLock.WriterLockAsync().ConfigureAwait(false);
                 if (fill.IsCompleteFill)
-                    _activeOrders.Remove(fill.OrderBase.OrderId);
+                    _activeOrders.RemoveAll(x => x.OrderId == fill.OrderBase.OrderId);
             }
 
             try
@@ -124,10 +125,10 @@ namespace TradingEngineServer.OrderEntryCommunication
             }
         }
 
-        public async Task<List<long>> GetActiveOrders(CancellationToken token)
+        public async Task<List<IOrderStatus>> GetActiveOrders(CancellationToken token)
         {
             using var lck = await _activeOrdersLock.ReaderLockAsync(token).ConfigureAwait(false);
-            return new List<long>(_activeOrders);
+            return new List<IOrderStatus>(_activeOrders);
         }
 
         public async Task WaitForClientExceptionAsync(CancellationToken token)
@@ -157,7 +158,7 @@ namespace TradingEngineServer.OrderEntryCommunication
         private readonly IServerStreamWriter<OrderEntryResponse> _responseStream;
         private readonly CancellationToken _updateToken = default;
         private readonly AsyncLock _responseStreamLock = new AsyncLock();
-        private readonly List<long> _activeOrders = new List<long>();
+        private readonly List<IOrderStatus> _activeOrders = new List<IOrderStatus>();
         private readonly AsyncReaderWriterLock _activeOrdersLock = new AsyncReaderWriterLock();
         private readonly AsyncManualResetEvent _clientExceptionSetEvent = new AsyncManualResetEvent(false);
         private Exception _clientException = null;

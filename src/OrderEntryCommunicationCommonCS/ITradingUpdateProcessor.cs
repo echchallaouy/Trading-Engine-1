@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TradingEngineServer.Orderbook;
 using TradingEngineServer.Orders;
+using TradingEngineServer.Orders.OrderStatuses;
 
 namespace TradingEngineServer.OrderEntryCommunication
 {
@@ -12,6 +13,6 @@ namespace TradingEngineServer.OrderEntryCommunication
         Task<ExchangeResult> ProcessOrderAsync(Order order);
         Task<ExchangeResult> ProcessOrderAsync(ModifyOrder modifyOrder);
         Task<ExchangeResult> ProcessOrderAsync(CancelOrder cancelOrder);
-        Task CancelAllAsync(List<long> orderIds);
+        Task CancelAllAsync(List<IOrderStatus> orderIds);
     }
 }
