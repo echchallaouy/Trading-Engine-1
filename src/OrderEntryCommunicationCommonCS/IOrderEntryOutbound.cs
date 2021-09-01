@@ -18,8 +18,10 @@ namespace TradingEngineServer.OrderEntryCommunication
         
     }
 
-    public interface IOrderEntryServer : IOrderEntryInbound, IOrderEntryOutbound
+    public interface IOrderEntryServer : IOrderEntryInbound, IOrderEntryOutbound, IDisposable
     {
+        void Start();
+        Task StopAsync();
         List<OrderEntryServerClient> GetClients();
     }
 }

@@ -6,10 +6,10 @@ namespace TradingEngineServer.Core.Configuration
 {
     public class TradingEngineServerConfiguration
     {
-        public TradingEngineServerSettings TradingEngineServerSettings { get; set; }
+        public OrderEntryServer OrderEntryServer { get; set; }
     }
 
-    public class TradingEngineServerSettings
+    public class OrderEntryServer
     {
         public int Port { get; set; }
     }

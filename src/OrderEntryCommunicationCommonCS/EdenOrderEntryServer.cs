@@ -12,7 +12,7 @@ namespace TradingEngineServer.OrderEntryCommunication
 {
     public class EdenOrderEntryServer : OrderEntryServerBase
     {
-        public EdenOrderEntryServer(ITradingUpdateProcessor tradingUpdateProcessor) : base()
+        public EdenOrderEntryServer(ITradingUpdateProcessor tradingUpdateProcessor, int port) : base(port)
         {
             _updateProcessor = tradingUpdateProcessor;
         }

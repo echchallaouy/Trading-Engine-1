@@ -107,6 +107,8 @@ namespace TradingEngineServer.Core
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _textLogger.Information(nameof(TradingEngineServer), $"Starting Trading Engine");
+            using EdenOrderEntryServer oeServer = new EdenOrderEntryServer(this, _engineConfiguration.OrderEntryServer.Port);
+            oeServer.Start();
             while (!stoppingToken.IsCancellationRequested)
             { }
             _textLogger.Information(nameof(TradingEngineServer), $"Stopping Trading Engine");
