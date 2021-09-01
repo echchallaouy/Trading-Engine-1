@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeCS", "..\ExchangeCS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonCS", "..\CommonCS\CommonCS.csproj", "{70D4E626-8314-4285-98AC-B3573D4F9244}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderEntryCommunicationCS", "..\OrderEntryCommunicationCommonCS\OrderEntryCommunicationCS.csproj", "{EF817789-455C-415E-8ED5-D5312CE302AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderEntryCommunicationCS", "..\OrderEntryCommunicationCommonCS\OrderEntryCommunicationCS.csproj", "{EF817789-455C-415E-8ED5-D5312CE302AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using TradingEngineServer.Fills;
 using TradingEngineServer.Rejects;
 
+
 namespace TradingEngineServer.OrderEntryCommunication
 {
     public class OrderEntryServerBase : OrderEntryService.OrderEntryServiceBase, IOrderEntryServer
@@ -19,7 +20,7 @@ namespace TradingEngineServer.OrderEntryCommunication
         {
             Port = port;
             // https://github.com/grpc/grpc/blob/1d91362f8124751ecfc1929df207006cabb41dae/include/grpc/impl/codegen/grpc_types.h#L136
-            _server = new Server(new List<ChannelOption>
+            _server = new Grpc.Core.Server(new List<ChannelOption>
             {
                 new ChannelOption("grpc.keepalive_time_ms", 1000),
                 new ChannelOption("grpc.keepalive_timeout_ms", 1000),
@@ -123,7 +124,8 @@ namespace TradingEngineServer.OrderEntryCommunication
             }
         }
 
-        private static async Task ShutdownAsync(TaskCompletionSource<object> shutdownStartEvent, TaskCompletionSource<object> shutdownOverEvent, Server server)
+        private static async Task ShutdownAsync(TaskCompletionSource<object> shutdownStartEvent, 
+            TaskCompletionSource<object> shutdownOverEvent, Grpc.Core.Server server)
         {
             await shutdownStartEvent.Task.ConfigureAwait(false);
             await server.KillAsync().ConfigureAwait(false);
@@ -162,7 +164,7 @@ namespace TradingEngineServer.OrderEntryCommunication
 
         public int Port { get; init; }
 
-        private readonly Server _server;
+        private readonly Grpc.Core.Server _server;
         private readonly ServerClientStore _clientStore = new ServerClientStore();
         private bool _started = false;
         private bool _disposed = false;
