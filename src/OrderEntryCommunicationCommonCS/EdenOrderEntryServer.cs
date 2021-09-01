@@ -71,7 +71,7 @@ namespace TradingEngineServer.OrderEntryCommunication
                 case Orderbook.ExchangeInformationType.Fill:
                     return HandleFill(clientStore, results.Fills, token);
                 default:
-                    return Task.CompletedTask;
+                    throw new InvalidOperationException($"Unknown ExchangeInformationType ({results.ExchangeInformationType})");
             }
         }
 
