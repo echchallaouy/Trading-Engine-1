@@ -16,11 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ExchangeCS\ExchangeCS.csproj" />
     <ProjectReference Include="..\LoggingCS\LoggingCS.csproj" />
-<<<<<<< HEAD
     <ProjectReference Include="..\OrderEntryCommunicationCommonCS\OrderEntryCommunicationCS.csproj" />
-=======
-    <ProjectReference Include="..\TradingServerCS\TradingServerCS.csproj" />
->>>>>>> master
   </ItemGroup>
 
   <ItemGroup>

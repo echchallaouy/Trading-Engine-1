@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingEngine", "TradingEngine.csproj", "{5DB9C915-A5E4-4ABD-9FD3-3BE259755139}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingCS", "..\LoggingCS\LoggingCS.csproj", "{1F000170-B50C-4C18-A5D2-98CBBFF4DFBF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderbookCS", "..\OrderbookCS\OrderbookCS.csproj", "{4BAB6F6E-A80E-4199-87AC-D7E6CA792D0A}"
@@ -33,11 +31,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeCS", "..\ExchangeCS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonCS", "..\CommonCS\CommonCS.csproj", "{70D4E626-8314-4285-98AC-B3573D4F9244}"
 EndProject
-<<<<<<< HEAD
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderEntryCommunicationCS", "..\OrderEntryCommunicationCommonCS\OrderEntryCommunicationCS.csproj", "{EF817789-455C-415E-8ED5-D5312CE302AB}"
-=======
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradingServerCS", "..\TradingServerCS\TradingServerCS.csproj", "{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}"
->>>>>>> master
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingEngine", "TradingEngine.csproj", "{1619E887-4550-4816-AB54-C0EDE6D1EB1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +41,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5DB9C915-A5E4-4ABD-9FD3-3BE259755139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DB9C915-A5E4-4ABD-9FD3-3BE259755139}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DB9C915-A5E4-4ABD-9FD3-3BE259755139}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DB9C915-A5E4-4ABD-9FD3-3BE259755139}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1F000170-B50C-4C18-A5D2-98CBBFF4DFBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1F000170-B50C-4C18-A5D2-98CBBFF4DFBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F000170-B50C-4C18-A5D2-98CBBFF4DFBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -101,17 +93,14 @@ Global
 		{70D4E626-8314-4285-98AC-B3573D4F9244}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70D4E626-8314-4285-98AC-B3573D4F9244}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70D4E626-8314-4285-98AC-B3573D4F9244}.Release|Any CPU.Build.0 = Release|Any CPU
-<<<<<<< HEAD
 		{EF817789-455C-415E-8ED5-D5312CE302AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF817789-455C-415E-8ED5-D5312CE302AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF817789-455C-415E-8ED5-D5312CE302AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF817789-455C-415E-8ED5-D5312CE302AB}.Release|Any CPU.Build.0 = Release|Any CPU
-=======
-		{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6137192F-093F-4E5E-9721-2D8B4D0ABC7A}.Release|Any CPU.Build.0 = Release|Any CPU
->>>>>>> master
+		{1619E887-4550-4816-AB54-C0EDE6D1EB1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1619E887-4550-4816-AB54-C0EDE6D1EB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1619E887-4550-4816-AB54-C0EDE6D1EB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1619E887-4550-4816-AB54-C0EDE6D1EB1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
