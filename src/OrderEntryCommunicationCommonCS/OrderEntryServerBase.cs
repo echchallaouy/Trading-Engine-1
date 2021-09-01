@@ -17,9 +17,9 @@ namespace TradingEngineServer.OrderEntryCommunication
         public OrderEntryServerBase() 
         { }
 
-        public async Task<IReadOnlyList<OrderEntryServerClient>> GetClientsAsync(CancellationToken token)
+        public List<OrderEntryServerClient> GetClients()
         {
-            return new ReadOnlyCollection<OrderEntryServerClient>(_clientStore.GetAll());
+            return new List<OrderEntryServerClient>(_clientStore.GetAll());
         }
 
         public sealed override async Task OrderEntry(IAsyncStreamReader<OrderEntryRequest> requestStream, IServerStreamWriter<OrderEntryResponse> responseStream, ServerCallContext context)

@@ -20,6 +20,6 @@ namespace TradingEngineServer.OrderEntryCommunication
 
     public interface IOrderEntryServer : IOrderEntryInbound, IOrderEntryOutbound
     {
-        Task<IReadOnlyList<OrderEntryServerClient>> GetClientsAsync(CancellationToken token);
+        List<OrderEntryServerClient> GetClients();
     }
 }
