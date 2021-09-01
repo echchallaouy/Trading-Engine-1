@@ -84,6 +84,5 @@ namespace TradingEngineServer.OrderEntryCommunication
         }
 
         private readonly ServerClientStore _clientStore = new ServerClientStore();
-        private readonly List<OrderEntryServerClient> _clients = new List<OrderEntryServerClient>();
     }
 }
