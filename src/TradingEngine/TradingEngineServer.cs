@@ -16,7 +16,7 @@ using TradingEngineServer.Orders;
 using TradingEngineServer.Orderbook;
 using TradingEngineServer.Rejects;
 
-using TradingEngineServer.OrderEntryCommunication;
+using TradingEngineServer.OrderEntryCommunicationServer;
 using System.Linq;
 using TradingEngineServer.Orders.OrderStatuses;
 

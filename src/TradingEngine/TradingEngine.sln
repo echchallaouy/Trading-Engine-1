@@ -27,9 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeCS", "..\ExchangeCS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonCS", "..\CommonCS\CommonCS.csproj", "{70D4E626-8314-4285-98AC-B3573D4F9244}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderEntryCommunicationCS", "..\OrderEntryCommunicationCommonCS\OrderEntryCommunicationCS.csproj", "{EF817789-455C-415E-8ED5-D5312CE302AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderEntryCommunicationServerCS", "..\OrderEntryCommunicationCommonCS\OrderEntryCommunicationServerCS.csproj", "{EF817789-455C-415E-8ED5-D5312CE302AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingEngine", "TradingEngine.csproj", "{1619E887-4550-4816-AB54-C0EDE6D1EB1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderEntryProtoCS", "..\OrderEntryProtoCS\OrderEntryProtoCS.csproj", "{11867979-CA2F-4094-A73C-6F50590E4495}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderEntryProtoAdapterCS", "..\OrderEntryProtoAdapterCS\OrderEntryProtoAdapterCS.csproj", "{B5F74CFA-7A28-4E17-8C4C-ED73A1D931B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +93,14 @@ Global
 		{1619E887-4550-4816-AB54-C0EDE6D1EB1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1619E887-4550-4816-AB54-C0EDE6D1EB1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1619E887-4550-4816-AB54-C0EDE6D1EB1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11867979-CA2F-4094-A73C-6F50590E4495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11867979-CA2F-4094-A73C-6F50590E4495}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11867979-CA2F-4094-A73C-6F50590E4495}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11867979-CA2F-4094-A73C-6F50590E4495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5F74CFA-7A28-4E17-8C4C-ED73A1D931B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5F74CFA-7A28-4E17-8C4C-ED73A1D931B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5F74CFA-7A28-4E17-8C4C-ED73A1D931B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5F74CFA-7A28-4E17-8C4C-ED73A1D931B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TradingEngineServer.Orders;
-using TradingEngineServer.Orders.OrderStatuses;
+using TradingEngineServer.OrderEntryProtoAdapter;
 
-namespace TradingEngineServer.OrderEntryCommunication
+namespace TradingEngineServer.OrderEntryCommunicationServer
 {
     public class EdenOrderEntryServer : OrderEntryServerBase
     {
@@ -17,20 +17,19 @@ namespace TradingEngineServer.OrderEntryCommunication
             _updateProcessor = tradingUpdateProcessor;
         }
 
-        protected override async Task ProcessSubscribeRequestAsync(OrderEntryRequest requestStream, string username, 
+        protected override async Task ProcessSubscribeRequestAsync(OrderEntryRequest requestStream, OrderEntryServerClient originalClient, 
             ICache<string, OrderEntryServerClient> clientStore, CancellationToken token)
         {
-            var client = clientStore.Get(username);
             switch (requestStream.OrderEntryTypeCase)
             {
                 case OrderEntryRequest.OrderEntryTypeOneofCase.NewOrder:
-                    await ProcessNewOrder(ProtoAdapter.NewOrderFromProto(requestStream.NewOrder), client, clientStore, token).ConfigureAwait(false);
+                    await ProcessNewOrder(ProtoAdapter.NewOrderFromProto(requestStream.NewOrder), originalClient, clientStore, token).ConfigureAwait(false);
                     break;
                 case OrderEntryRequest.OrderEntryTypeOneofCase.ModifyOrder:
-                    await ProcessModifyOrder(ProtoAdapter.ModifyOrderFromProto(requestStream.ModifyOrder), client, clientStore, token).ConfigureAwait(false);
+                    await ProcessModifyOrder(ProtoAdapter.ModifyOrderFromProto(requestStream.ModifyOrder), originalClient, clientStore, token).ConfigureAwait(false);
                     break;
                 case OrderEntryRequest.OrderEntryTypeOneofCase.CancelOrder:
-                    await ProcessCancelOrder(ProtoAdapter.CancelOrderFromProto(requestStream.CancelOrder), client, clientStore, token).ConfigureAwait(false);
+                    await ProcessCancelOrder(ProtoAdapter.CancelOrderFromProto(requestStream.CancelOrder), originalClient, clientStore, token).ConfigureAwait(false);
                     break;
                 default:
                     break;
@@ -79,9 +78,9 @@ namespace TradingEngineServer.OrderEntryCommunication
         {
             var publishFillTasks = fills.Select(f =>
             {
-                if (clientStore.TryGet(f.OrderBase.Username, out var fillClient))
+                if (clientStore.TryGet(f.OrderBase.Username, out var client))
                 {
-                    return fillClient.PublishFillAsync(f, token);
+                    return client.PublishFillAsync(f, token);
                 }
                 return Task.CompletedTask;
             });

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using TradingEngineServer.Rejects;
 
-namespace TradingEngineServer.OrderEntryCommunication
+namespace TradingEngineServer.OrderEntryCommunicationServer
 {
     public interface IOrderEntryOutbound
     {

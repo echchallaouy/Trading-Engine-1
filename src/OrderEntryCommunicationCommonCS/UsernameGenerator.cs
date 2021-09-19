@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace TradingEngineServer.OrderEntryCommunication
+namespace TradingEngineServer.OrderEntryCommunicationServer
 {
     sealed class UsernameGenerator
     {

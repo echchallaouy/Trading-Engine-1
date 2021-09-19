@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TradingEngineServer.OrderEntryCommunication
+namespace TradingEngineServer.OrderEntryCommunicationServer
 {
     public class ServerClientStore : ICache<string, OrderEntryServerClient>
     {

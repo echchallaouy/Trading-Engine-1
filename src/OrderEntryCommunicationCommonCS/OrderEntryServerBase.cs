@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using TradingEngineServer.Rejects;
 
 
-namespace TradingEngineServer.OrderEntryCommunication
+namespace TradingEngineServer.OrderEntryCommunicationServer
 {
     public class OrderEntryServerBase : OrderEntryService.OrderEntryServiceBase, IOrderEntryServer
     {
@@ -48,7 +48,7 @@ namespace TradingEngineServer.OrderEntryCommunication
                 {
                     using var doneOrderEntryTokenSource = CancellationTokenSource.CreateLinkedTokenSource(context.CancellationToken);
                     using Task waitForErrorTask = client.WaitForClientExceptionAsync(doneOrderEntryTokenSource.Token);
-                    using Task processRequestTask = ProcessSubscribeRequestAsync(requestStream.Current, username, _clientStore, doneOrderEntryTokenSource.Token);
+                    using Task processRequestTask = ProcessSubscribeRequestAsync(requestStream.Current, client, _clientStore, doneOrderEntryTokenSource.Token);
                     Task[] tasks = new[] { waitForErrorTask, processRequestTask };
                     Task firstFinishedTask = await Task.WhenAny(tasks).ConfigureAwait(false);
                     doneOrderEntryTokenSource.Cancel();
@@ -72,16 +72,16 @@ namespace TradingEngineServer.OrderEntryCommunication
         }
 
         // PROTECTED //
-        private async Task ReadClientSubscriptionRequestsAsync(IAsyncStreamReader<OrderEntryRequest> requestStream, string username,
+        private async Task ReadClientSubscriptionRequestsAsync(IAsyncStreamReader<OrderEntryRequest> requestStream, OrderEntryServerClient originalClient,
             ICache<string, OrderEntryServerClient> clientStore, CancellationToken token)
         {
             while (await requestStream.MoveNext(token).ConfigureAwait(false))
             {
-                await ProcessSubscribeRequestAsync(requestStream.Current, username, clientStore, token).ConfigureAwait(false);
+                await ProcessSubscribeRequestAsync(requestStream.Current, originalClient, clientStore, token).ConfigureAwait(false);
             }
         }
 
-        protected virtual Task ProcessSubscribeRequestAsync(OrderEntryRequest requestStream, string username,
+        protected virtual Task ProcessSubscribeRequestAsync(OrderEntryRequest requestStream, OrderEntryServerClient originalClient,
             ICache<string, OrderEntryServerClient> clientStore, CancellationToken token)
         {
             return Task.CompletedTask;

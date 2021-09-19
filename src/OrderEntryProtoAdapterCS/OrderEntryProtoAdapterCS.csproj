@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <LangVersion>9</LangVersion>
+        <RootNamespace>TradingEngineServer.OrderEntryProtoAdapter</RootNamespace>
+        <AssemblyName>TradingEngineServer.OrderEntryProtoAdapter</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\OrderbookCS\OrderbookCS.csproj" />
+        <ProjectReference Include="..\OrderEntryProtoCS\OrderEntryProtoCS.csproj" />
+        <ProjectReference Include="..\OrdersCS\OrdersCS.csproj" />
+    </ItemGroup>
+
+</Project>

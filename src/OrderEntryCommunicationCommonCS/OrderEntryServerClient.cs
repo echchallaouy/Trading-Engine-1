@@ -6,12 +6,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using TradingEngineServer.OrderEntryProtoAdapter;
 using TradingEngineServer.Orders;
 using TradingEngineServer.Orders.OrderStatuses;
 using TradingEngineServer.Rejects;
 
-namespace TradingEngineServer.OrderEntryCommunication
+namespace TradingEngineServer.OrderEntryCommunicationServer
 {
     public class OrderEntryServerClient
     {

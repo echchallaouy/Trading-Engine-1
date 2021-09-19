@@ -8,9 +8,9 @@ using TradingEngineServer.Instrument;
 using TradingEngineServer.Orders;
 using TradingEngineServer.Orders.OrderStatuses;
 
-namespace TradingEngineServer.OrderEntryCommunication
+namespace TradingEngineServer.OrderEntryProtoAdapter
 {
-    internal class ProtoAdapter
+    public class ProtoAdapter
     {
         public static OrderEntryModifyOrderStatus ModifyOrderStatusToProto(ModifyOrderStatus modifyOrderStatus)
         {

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9</LangVersion>
+    <RootNamespace>TradingEngineServer.OrderEntryCommunicationServer</RootNamespace>
+    <AssemblyName>TradingEngineServer.OrderEntryCommunicationServer</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <PackageReference Include="Nito.AsyncEx" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrderEntryProtoAdapterCS\OrderEntryProtoAdapterCS.csproj" />
+  </ItemGroup>
+
+</Project>

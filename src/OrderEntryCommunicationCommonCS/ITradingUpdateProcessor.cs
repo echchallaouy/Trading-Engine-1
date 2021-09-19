@@ -6,7 +6,7 @@ using TradingEngineServer.Orderbook;
 using TradingEngineServer.Orders;
 using TradingEngineServer.Orders.OrderStatuses;
 
-namespace TradingEngineServer.OrderEntryCommunication
+namespace TradingEngineServer.OrderEntryCommunicationServer
 {
     public interface ITradingUpdateProcessor
     {
