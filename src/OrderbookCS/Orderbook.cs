@@ -28,7 +28,7 @@ namespace TradingEngineServer.Orderbook
 
         public void AddOrder(Order order)
         {
-            var baseLimit = new Limit() { Price = order.Price, };
+            var baseLimit = new Limit(order.Price);
             AddOrder(order, baseLimit, order.IsBuySide ? _bidLimits : _askLimits, _orders);
         }
 
@@ -55,12 +55,15 @@ namespace TradingEngineServer.Orderbook
             return _orders.ContainsKey(orderId);
         }
 
-        public bool TryGetOrder(long orderId, out Order order)
+        public bool TryGetOrder(long orderId, out OrderRecord order)
         {
+            const uint UnknownTheoreticalQueuePosition = 0;
             if (_orders.TryGetValue(orderId, out var entry))
             {
                 // Create a copy as to not allow the client to alter the state of the order.
-                order = entry.Current.Clone();
+                var ord = entry.Current;
+                order = new OrderRecord(ord.OrderId, ord.CurrentQuantity, ord.IsBuySide,
+                    ord.Username, ord.SecurityId, UnknownTheoreticalQueuePosition);
                 return true;
             }
             order = null;
@@ -132,9 +135,9 @@ namespace TradingEngineServer.Orderbook
         public OrderbookSpread GetSpread()
         {
             long? bestAsk = null, bestBid = null;
-            if (_askLimits.Any() && _askLimits.Min.Head != null)
+            if (_askLimits.Any() && !_askLimits.Min.IsEmpty)
                 bestAsk = _askLimits.Min.Price;
-            if (_bidLimits.Any() && _bidLimits.Max.Head != null)
+            if (_bidLimits.Any() && !_bidLimits.Max.IsEmpty)
                 bestBid = _bidLimits.Max.Price;
             return new OrderbookSpread(bestBid, bestAsk);
         }

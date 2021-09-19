@@ -13,8 +13,8 @@ namespace OrderbookCSTest
     {
         private static readonly IEnumerable<OrderbookEntry> _obes = new List<OrderbookEntry>()
         {
-            new OrderbookEntry(new Order(new OrderCore(0, string.Empty, 0), 1, 1, true), new Limit()),
-            new OrderbookEntry(new Order(new OrderCore(1, string.Empty, 0), 1, 1, true), new Limit()),
+            new OrderbookEntry(new Order(new OrderCore(0, string.Empty, 0), 1, 1, true), new Limit(0)),
+            new OrderbookEntry(new Order(new OrderCore(1, string.Empty, 0), 1, 1, true), new Limit(0)),
         };
 
         [TestMethod]

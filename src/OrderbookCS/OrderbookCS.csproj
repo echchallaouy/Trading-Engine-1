@@ -6,6 +6,7 @@
     <RootNamespace>TradingEngineServer.Orderbook</RootNamespace>
     <AssemblyName>TradingEngineServer.Orderbook</AssemblyName>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

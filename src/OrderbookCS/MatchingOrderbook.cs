@@ -47,7 +47,7 @@ namespace TradingEngineServer.Orderbook
                 _orderbook.RemoveOrder(cancelOrder);
         }
 
-        public bool TryGetOrder(long orderId, out Order order)
+        public bool TryGetOrder(long orderId, out OrderRecord order)
         {
             return _orderbook.TryGetOrder(orderId, out order);
         }

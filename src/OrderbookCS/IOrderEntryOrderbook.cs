@@ -8,7 +8,7 @@ namespace TradingEngineServer.Orderbook
     public interface IReadOnlyOrderbook
     {
         bool ContainsOrder(long orderId);
-        bool TryGetOrder(long orderId, out Order order);
+        bool TryGetOrder(long orderId, out OrderRecord order);
         ModifyOrderType GetModifyOrderType(ModifyOrder modifyOrder);
         OrderbookSpread GetSpread();
         int Count { get; }

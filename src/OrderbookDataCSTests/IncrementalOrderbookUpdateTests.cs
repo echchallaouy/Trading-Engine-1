@@ -14,7 +14,7 @@ namespace OrderbookDataCSTests
         public void OrderbookLevel_UpdateType_Delete()
         {
             // Empty limit (empty price level with no orderbook entries)
-            var limit = new Limit();
+            var limit = new Limit(0);
             var incrementalOrderbookUpdate = OrderbookUtilities.CreateIncrementalOrderbookUpdate(limit, DateTime.UtcNow);
 
             Assert.AreEqual(IncrementalOrderbookUpdateType.Delete, incrementalOrderbookUpdate.UpdateType);
@@ -66,10 +66,7 @@ namespace OrderbookDataCSTests
 
         private static Limit CreateLimitWithOneEntry(long price, int securityId, bool isBuySide)
         {
-            var limit = new Limit()
-            {
-                Price = price,
-            };
+            var limit = new Limit(price);
             var orderbookEntry = new OrderbookEntry(new Order(new OrderCore(0, string.Empty, securityId), price, 10, isBuySide), limit);
             limit.Head = orderbookEntry;
             limit.Tail = orderbookEntry;
@@ -78,10 +75,7 @@ namespace OrderbookDataCSTests
 
         private static Limit CreateLimitWithTwoEntries(long price, int securityId, bool isBuySide)
         {
-            var limit = new Limit()
-            {
-                Price = price,
-            };
+            var limit = new Limit(price);
             var orderbookEntry = new OrderbookEntry(new Order(new OrderCore(0, string.Empty, securityId), price, 10, isBuySide), limit);
             var orderbookEntryTail = new OrderbookEntry(new Order(new OrderCore(0, string.Empty, securityId), price, 5, isBuySide), limit);
             orderbookEntry.Next = orderbookEntryTail;
