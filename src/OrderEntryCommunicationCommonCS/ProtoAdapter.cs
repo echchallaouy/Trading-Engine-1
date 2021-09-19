@@ -3,7 +3,7 @@ using Google.Protobuf.WellKnownTypes;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TradingEngineServer.Fills;
+
 using TradingEngineServer.Instrument;
 using TradingEngineServer.Orders;
 using TradingEngineServer.Orders.OrderStatuses;

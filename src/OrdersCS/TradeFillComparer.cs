@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TradingEngineServer.Fills
+namespace TradingEngineServer.Orders
 {
     /// <summary>
     /// Two fills belonging to the same trade are considered equal.

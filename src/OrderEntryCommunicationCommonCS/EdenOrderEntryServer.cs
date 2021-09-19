@@ -75,7 +75,7 @@ namespace TradingEngineServer.OrderEntryCommunication
             }
         }
 
-        private static Task HandleFill(ICache<string, OrderEntryServerClient> clientStore, List<Fills.Fill> fills, CancellationToken token)
+        private static Task HandleFill(ICache<string, OrderEntryServerClient> clientStore, List<Fill> fills, CancellationToken token)
         {
             var publishFillTasks = fills.Select(f =>
             {

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TradingEngineServer.Fills;
-using TradingEngineServer.Orderbook;
+using TradingEngineServer.Orders;
 using TradingEngineServer.Rejects;
 
 namespace TradingEngineServer.Orderbook

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TradingEngineServer.Fills;
+using TradingEngineServer.Orders;
 
 namespace TradingEngineServer.Trades
 {

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-using TradingEngineServer.Fills;
+
 using TradingEngineServer.OrderbookData;
+using TradingEngineServer.Orders;
 using TradingEngineServer.Trades;
 
 namespace TradingEngineServer.Orderbook

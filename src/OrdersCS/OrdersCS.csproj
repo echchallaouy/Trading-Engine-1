@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonCS\CommonCS.csproj" />
+    <ProjectReference Include="..\InstrumentCS\InstrumentCS.csproj" />
   </ItemGroup>
 
 </Project>

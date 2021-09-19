@@ -4,7 +4,7 @@ using System.Text;
 using TradingEngineServer.Instrument;
 using TradingEngineServer.Orders;
 
-namespace TradingEngineServer.Fills
+namespace TradingEngineServer.Orders
 {
     public class Fill
     {
