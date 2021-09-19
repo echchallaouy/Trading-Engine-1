@@ -5,7 +5,7 @@ using TradingEngineServer.Common;
 
 namespace TradingEngineServer.Orders
 {
-    public class ModifyOrder : IOrderCore, IPrototype<ModifyOrder>
+    public class ModifyOrder : IOrderCore
     {
         public ModifyOrder(OrderCore orderBase, long price, uint modifyQuantity, bool isBuySide)
         {
@@ -36,12 +36,6 @@ namespace TradingEngineServer.Orders
         public Order ToNewOrder()
         {
             return new Order(this);
-        }
-
-        // IPROTOTYPE //
-        public ModifyOrder Clone()
-        {
-            return Cloner<ModifyOrder>.CreateDeepCopy(this);
         }
 
         // TOSTRING //

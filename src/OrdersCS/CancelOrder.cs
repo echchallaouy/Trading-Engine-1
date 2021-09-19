@@ -2,7 +2,7 @@
 
 namespace TradingEngineServer.Orders
 {
-    public class CancelOrder : IOrderCore, IPrototype<CancelOrder>
+    public class CancelOrder : IOrderCore
     {
         public CancelOrder(IOrderCore orderBase)
         {
@@ -13,12 +13,6 @@ namespace TradingEngineServer.Orders
         public long OrderId => _orderBase.OrderId;
         public string Username => _orderBase.Username;
         public int SecurityId => _orderBase.SecurityId;
-
-        // IPROTOTYPE //
-        public CancelOrder Clone()
-        {
-            return Cloner<CancelOrder>.CreateDeepCopy(this);
-        }
 
         // TOSTRING //
         public override string ToString()

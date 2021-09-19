@@ -5,7 +5,7 @@ using TradingEngineServer.Common;
 
 namespace TradingEngineServer.Orders
 {
-    public class Order : IOrderCore, IPrototype<Order>
+    public class Order : IOrderCore
     {
         public Order(IOrderCore orderBase, long price, uint quantity, bool isBuySide)
         {
@@ -45,12 +45,6 @@ namespace TradingEngineServer.Orders
             if (quantityDelta > CurrentQuantity)
                 throw new InvalidOperationException($"Quantity Delta > Current Quantity (OrderId: {OrderId})");
             CurrentQuantity -= quantityDelta;
-        }
-
-        // IPROTOTYPE //
-        public Order Clone()
-        {
-            return Cloner<Order>.CreateDeepCopy(this);
         }
 
         // TOSTRING //
