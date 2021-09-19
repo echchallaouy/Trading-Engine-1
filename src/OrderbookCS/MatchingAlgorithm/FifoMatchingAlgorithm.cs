@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TradingEngineServer.Fills;
 using TradingEngineServer.Instrument;
+using TradingEngineServer.Orderbook.MatchingAlgorithm.OrderbookIterator;
 using TradingEngineServer.OrderbookData;
 using TradingEngineServer.Orders;
 using TradingEngineServer.Trades;
@@ -22,8 +23,11 @@ namespace TradingEngineServer.Orderbook.MatchingAlgorithm
             if (!bids.Any() || !asks.Any())
                 return matchResult; // Can't match without both sides.
 
-            OrderbookEntry orderToMatchBid = bids.First();
-            OrderbookEntry orderToMatchAsk = asks.First();
+            var bidOrderIterator = new OrderbookEntryIterator(bids);
+            var askOrderIterator = new OrderbookEntryIterator(asks);
+
+            OrderbookEntry orderToMatchBid = bidOrderIterator.CurrentItemOrDefault();
+            OrderbookEntry orderToMatchAsk = askOrderIterator.CurrentItemOrDefault();
             
             do
             {
@@ -32,13 +36,15 @@ namespace TradingEngineServer.Orderbook.MatchingAlgorithm
                 var remainingQuantityBid = orderToMatchBid.Current.CurrentQuantity;
                 if (remainingQuantityBid == 0)
                 {
-                    orderToMatchBid = orderToMatchBid.Next;
+                    bidOrderIterator.Next();
+                    orderToMatchBid = bidOrderIterator.CurrentItemOrDefault();
                     continue;
                 }
                 var remainingQuantityAsk = orderToMatchAsk.Current.CurrentQuantity;
                 if (remainingQuantityAsk == 0)
                 {
-                    orderToMatchAsk = orderToMatchAsk.Next;
+                    askOrderIterator.Next();
+                    orderToMatchAsk = askOrderIterator.CurrentItemOrDefault();
                     continue;
                 }
                 var fillQuantity = Math.Min(remainingQuantityAsk, remainingQuantityBid);
@@ -58,9 +64,15 @@ namespace TradingEngineServer.Orderbook.MatchingAlgorithm
 
                 // Lets move on!
                 if (tradeResult.BuyFill.IsCompleteFill)
-                    orderToMatchBid = orderToMatchBid.Next;
+                {
+                    bidOrderIterator.Next();
+                    orderToMatchBid = bidOrderIterator.CurrentItemOrDefault();
+                }
                 if (tradeResult.SellFill.IsCompleteFill)
-                    orderToMatchAsk = orderToMatchAsk.Next;
+                {
+                    askOrderIterator.Next();
+                    orderToMatchAsk = askOrderIterator.CurrentItemOrDefault();
+                }
             }
             while (orderToMatchBid != null && orderToMatchAsk != null);
 

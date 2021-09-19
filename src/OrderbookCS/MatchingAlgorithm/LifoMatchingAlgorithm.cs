@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using TradingEngineServer.Fills;
 using TradingEngineServer.Instrument;
+using TradingEngineServer.Orderbook.MatchingAlgorithm.OrderbookIterator;
 using TradingEngineServer.OrderbookData;
 using TradingEngineServer.Orders;
 using TradingEngineServer.Trades;
@@ -28,8 +29,11 @@ namespace TradingEngineServer.Orderbook.MatchingAlgorithm
             var reorderedAsks = asks.GroupBy(x => x.ParentLimit.Price).Select(x => x.OrderByDescending(oe => oe.CreationTime))
                 .SelectMany(x => x);
 
-            OrderbookEntry orderToMatchBid = reorderedBids.First();
-            OrderbookEntry orderToMatchAsk = reorderedAsks.First();
+            var bidOrderIterator = new OrderbookEntryIterator(reorderedBids);
+            var askOrderIterator = new OrderbookEntryIterator(reorderedAsks);
+
+            OrderbookEntry orderToMatchBid = bidOrderIterator.CurrentItemOrDefault();
+            OrderbookEntry orderToMatchAsk = askOrderIterator.CurrentItemOrDefault();
 
             do
             {
@@ -38,13 +42,15 @@ namespace TradingEngineServer.Orderbook.MatchingAlgorithm
                 var remainingQuantityBid = orderToMatchBid.Current.CurrentQuantity;
                 if (remainingQuantityBid == 0)
                 {
-                    orderToMatchBid = orderToMatchBid.Previous;
+                    bidOrderIterator.Next();
+                    orderToMatchBid = bidOrderIterator.CurrentItemOrDefault();
                     continue;
                 }
                 var remainingQuantityAsk = orderToMatchAsk.Current.CurrentQuantity;
                 if (remainingQuantityAsk == 0)
                 {
-                    orderToMatchAsk = orderToMatchAsk.Previous;
+                    askOrderIterator.Next();
+                    orderToMatchAsk = askOrderIterator.CurrentItemOrDefault();
                     continue;
                 }
                 var fillQuantity = Math.Min(remainingQuantityAsk, remainingQuantityBid);
@@ -64,9 +70,15 @@ namespace TradingEngineServer.Orderbook.MatchingAlgorithm
 
                 // Lets move on. Or better said, let's move back!
                 if (tradeResult.BuyFill.IsCompleteFill)
-                    orderToMatchBid = orderToMatchBid.Previous;
+                {
+                    bidOrderIterator.Next();
+                    orderToMatchBid = bidOrderIterator.CurrentItemOrDefault();
+                }
                 if (tradeResult.SellFill.IsCompleteFill)
-                    orderToMatchAsk = orderToMatchAsk.Previous;
+                {
+                    askOrderIterator.Next();
+                    orderToMatchAsk = askOrderIterator.CurrentItemOrDefault();
+                }
             }
             while (orderToMatchBid != null && orderToMatchAsk != null);
 
