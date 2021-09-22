@@ -213,5 +213,12 @@ namespace OrderbookCSTest
             Assert.AreEqual(true, spread.Bid.HasValue);
             Assert.AreEqual(1, spread.Spread.Value);
         }
+
+        [TestMethod]
+        public void ProRataOrderbook_MatchNoOrders()
+        {
+            MatchingOrderbook prorataOrderbook = OrderbookFactory.CreateOrderbook(_security);
+            Assert.ThrowsException<MatchException>(() => prorataOrderbook.Match());
+        }
     }
 }

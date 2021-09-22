@@ -176,5 +176,12 @@ namespace OrderbookCSTest
             Assert.AreEqual(true, spread.Ask.HasValue);
             Assert.AreEqual(false, spread.Bid.HasValue);
         }
+
+        [TestMethod]
+        public void LifoOrderbook_MatchNoOrders()
+        {
+            MatchingOrderbook LifoOrderbook = OrderbookFactory.CreateOrderbook(_security);
+            Assert.ThrowsException<MatchException>(() => LifoOrderbook.Match());
+        }
     }
 }
