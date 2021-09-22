@@ -20,8 +20,10 @@ namespace TradingEngineServer.Orderbook.MatchingAlgorithm
             var eventTime = DateTime.UtcNow;
             var matchResult = new MatchResult();
 
+            if (!bids.Any() && !asks.Any())
+                throw new MatchException("There are no bids and no asks."); // Can't match without both sides.
             if (!bids.Any() || !asks.Any())
-                return matchResult; // Can't match without both sides.
+                return matchResult;
 
             var bidOrderIterator = new OrderbookEntryIterator(bids);
             var askOrderIterator = new OrderbookEntryIterator(asks);
@@ -56,12 +58,7 @@ namespace TradingEngineServer.Orderbook.MatchingAlgorithm
                 // Think of refactoring this by including it elsewhere
                 var tradeResult = TradeUtilities.CreateTradeAndFills(orderToMatchBid.Current, orderToMatchAsk.Current,
                     fillQuantity, AllocationAlgorithm.Fifo, eventTime);
-                matchResult.AddTradeResult(tradeResult);
-                bool buySideIsAggressor = orderToMatchBid.CreationTime > orderToMatchAsk.CreationTime;
-                Limit relevantOrderbookLimit = buySideIsAggressor ? orderToMatchAsk.ParentLimit : orderToMatchBid.ParentLimit;
-                var orderbookUpdate = OrderbookUtilities.CreateIncrementalOrderbookUpdate(relevantOrderbookLimit, eventTime);
-                matchResult.AddIncrementalOrderbookUpdate(orderbookUpdate);
-
+                MatchResultCreator.UpdateMatchResult(matchResult, tradeResult, orderToMatchBid, orderToMatchAsk, eventTime);
                 // Lets move on!
                 if (tradeResult.BuyFill.IsCompleteFill)
                 {

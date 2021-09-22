@@ -140,5 +140,12 @@ namespace OrderbookCSTest
             Assert.AreEqual(false, spread.Ask.HasValue);
             Assert.AreEqual(false, spread.Bid.HasValue);
         }
+
+        [TestMethod]
+        public void FifoOrderbook_MatchNoOrders()
+        {
+            MatchingOrderbook fifoOrderbook = OrderbookFactory.CreateOrderbook(_fifoSecurity);
+            Assert.ThrowsException<MatchException>(() => fifoOrderbook.Match());
+        }
     }
 }
