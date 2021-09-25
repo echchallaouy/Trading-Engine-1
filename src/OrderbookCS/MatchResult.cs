@@ -66,6 +66,14 @@ namespace TradingEngineServer.Orderbook
             }
         }
 
+        public bool ContainsMatch
+        {
+            get
+            {
+                return _fills.Any();
+            }
+        }
+
         private readonly List<Fill> _fills = new List<Fill>();
         private readonly List<Trade> _trades = new List<Trade>();
         private readonly List<IncrementalOrderbookUpdate> _orderbookUpdates = new List<IncrementalOrderbookUpdate>();

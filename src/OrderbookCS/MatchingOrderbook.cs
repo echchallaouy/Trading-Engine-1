@@ -99,6 +99,36 @@ namespace TradingEngineServer.Orderbook
             }
         }
 
+        public OrderbookSlice GetOrderbookSlice(long price)
+        {
+            lock (_lock)
+                return _orderbook.GetOrderbookSlice(price);
+        }
 
+        public bool CanMatch()
+        {
+            lock (_lock)
+                return _orderbook.IsCrossed();
+        }
+
+        public bool IsCrossed()
+        {
+            lock (_lock)
+                return _orderbook.IsCrossed();
+        }
+
+        public bool TryMatch(out MatchResult matchResult)
+        {
+            if (CanMatch())
+            {
+                matchResult = Match();
+                return true;
+            }
+            else
+            {
+                matchResult = null;
+                return false;
+            }
+        }
     }
 }
