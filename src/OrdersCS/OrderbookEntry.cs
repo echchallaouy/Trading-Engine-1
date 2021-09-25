@@ -18,5 +18,10 @@ namespace TradingEngineServer.Orders
         public Limit ParentLimit { get; private set; }
         public OrderbookEntry Next { get; set; } = null;
         public OrderbookEntry Previous { get; set; } = null;
+
+        public override string ToString()
+        {
+            return $"{Current}";
+        }
     }
 }
