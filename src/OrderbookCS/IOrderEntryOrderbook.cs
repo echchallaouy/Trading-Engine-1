@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TradingEngineServer.OrderbookData;
 using TradingEngineServer.Orders;
 
 namespace TradingEngineServer.Orderbook
 {
     public interface IReadOnlyOrderbook
     {
+        bool IsCrossed();
         bool ContainsOrder(long orderId);
         bool TryGetOrder(long orderId, out OrderRecord order);
         ModifyOrderType GetModifyOrderType(ModifyOrder modifyOrder);
+        OrderbookSlice GetOrderbookSlice(long price);
         OrderbookSpread GetSpread();
         int Count { get; }
     }

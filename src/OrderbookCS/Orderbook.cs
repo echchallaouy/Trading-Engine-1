@@ -234,5 +234,31 @@ namespace TradingEngineServer.Orderbook
             foreach (var id in ids)
                 RemoveOrder(id, _orders);
         }
+
+        public OrderbookSlice GetOrderbookSlice(long price)
+        {
+            var priceLevel = new Limit(price);
+            if (_askLimits.TryGetValue(priceLevel, out Limit askValue))
+            {
+                return new OrderbookSlice(Side.Ask, price, askValue.GetLevelOrderRecords());
+            }
+            else if (_bidLimits.TryGetValue(priceLevel, out Limit bidValue))
+            {
+                return new OrderbookSlice(Side.Bid, price, bidValue.GetLevelOrderRecords());
+            }
+            else return new OrderbookSlice(Side.Unknown, price, default);
+        }
+
+        public bool IsCrossed()
+        {
+            var bbo = GetSpread();
+            if (bbo.Spread.HasValue)
+            {
+                if (bbo.Spread <= 0)
+                    return true;
+                else return false;
+            }
+            else return false;
+        }
     }
 }
