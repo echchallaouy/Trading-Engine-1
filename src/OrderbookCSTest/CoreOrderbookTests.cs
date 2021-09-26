@@ -78,6 +78,29 @@ namespace OrderbookCSTest
         }
 
         [TestMethod]
+        public void Orderbook_AddTwoOrdersThenModify_Success()
+        {
+            // 1
+            const long orderId = 0;
+            const uint modifyOrderQuantity = 5;
+            Orderbook ob = new Orderbook(default);
+            ob.AddOrder(new Order(new OrderCore(orderId, "Test", 1), 1_000, 10, true));
+            ob.AddOrder(new Order(new OrderCore(1, "Person", 1), 1_000, 10, true)); 
+            ob.ChangeOrder(new ModifyOrder(new OrderCore(orderId, "Test", 1), 1_000, modifyOrderQuantity, true)); // Modified order should be moved to back
+
+            // 2
+            var buyOrders = ob.GetBuyOrders();
+
+            int actual = ob.Count;
+            const int expected = 2;
+            var lastOrder = buyOrders.Last();
+
+            // 3
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(orderId, lastOrder.Current.OrderId);
+        }
+
+        [TestMethod]
         public void Orderbook_ModifyNonExistantOrder_RequestRejects()
         {
             // 1

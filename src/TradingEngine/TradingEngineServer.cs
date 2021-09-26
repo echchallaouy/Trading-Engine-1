@@ -19,6 +19,7 @@ using TradingEngineServer.Rejects;
 using TradingEngineServer.OrderEntryCommunicationServer;
 using System.Linq;
 using TradingEngineServer.Orders.OrderStatuses;
+using TradingEngineServer.OrderbookData;
 
 namespace TradingEngineServer.Core
 {
@@ -39,58 +40,127 @@ namespace TradingEngineServer.Core
         }
         public Task<ExchangeResult> ProcessOrderAsync(Order order)
         {
+            var now = DateTime.UtcNow;
             _textLogger.Information(nameof(TradingEngineServer), $"Handling NewOrder: {order}");
             if (_exchange.TryGetOrderbook(order.SecurityId, out var orderbook))
             {
                 if (RejectGenerator.TryRejectNewOrder(order, orderbook, out var rejection))
                 {
-                    return Task.FromResult(ExchangeResult.CreateExchangeResult(rejection));
+                    return Task.FromResult(new ExchangeResult(rejection));
                 }
                 else
                 {
+                    // THIS METHOD IS INCOMPLETE
                     orderbook.AddOrder(order);
-                    var matchResults = orderbook.Match();
-                    return Task.FromResult(ExchangeResult.CreateExchangeResult(matchResults.Fills));
+                    if (orderbook.TryMatch(out MatchResult matchResults))
+                    {
+                        // Publish Market Data
+                        // ...
+                        //
+
+                        // Publish fills.
+                        return Task.FromResult(new ExchangeResult(matchResults.Fills));
+                    }
+                    else
+                    {
+                        // Create a single orderbook update outside of those in a match.
+                        var orderRecords = orderbook.GetOrderbookSlice(order.Price).OrderRecords;
+                        var orderLevel = new IncrementalOrderbookUpdate
+                        {
+                            SecurityId = order.SecurityId,
+                            EntryType = order.IsBuySide ? OrderbookEntryType.Bid : OrderbookEntryType.Ask,
+                            EventTime = now, // Theoretically incorrect time.
+                            OrderCount = (uint)orderRecords.Count,
+                            Price = order.Price,
+                            Quantity = (uint)orderRecords.Sum(x => x.Quantity),
+                            UpdateType = IncrementalOrderbookUpdateType.New,
+                            IncrementalOrderbookUpdateEntries = new List<IncrementalOrderbookUpdateEntry>(orderRecords.Select(o => new IncrementalOrderbookUpdateEntry(o.OrderId, o.Quantity, o.TheoreticalQueuePosition))),
+                        };
+                        return Task.FromResult(ExchangeResult.Null);
+                    }
                 }
             }
-            else return Task.FromResult(ExchangeResult.CreateExchangeResult(RejectionCreator.GenerateOrderCoreReject(order, RejectionReason.OrderbookNotFound)));
+            else return Task.FromResult(new ExchangeResult(RejectionCreator.GenerateOrderCoreReject(order, RejectionReason.OrderbookNotFound)));
         }
 
         public Task<ExchangeResult> ProcessOrderAsync(ModifyOrder modifyOrder)
         {
+            DateTime now = DateTime.UtcNow;
             _textLogger.Information(nameof(TradingEngineServer), $"Handling ModifyOrder: {modifyOrder}");
             if (_exchange.TryGetOrderbook(modifyOrder.SecurityId, out var orderbook))
             {
                 if (RejectGenerator.TryRejectModifyOrder(modifyOrder, orderbook, out var rejection))
                 {
-                    return Task.FromResult(ExchangeResult.CreateExchangeResult(rejection));
+                    return Task.FromResult(new ExchangeResult(rejection));
                 }
                 else
                 {
                     orderbook.ChangeOrder(modifyOrder);
-                    var matchResults = orderbook.Match();
-                    return Task.FromResult(ExchangeResult.CreateExchangeResult(matchResults.Fills));
+                    if (orderbook.TryMatch(out MatchResult matchResults))
+                    {
+                        return Task.FromResult(new ExchangeResult(matchResults.Fills));
+                    }
+                    else
+                    {
+                        var orderRecords = orderbook.GetOrderbookSlice(modifyOrder.Price).OrderRecords;
+                        var orderLevel = new IncrementalOrderbookUpdate
+                        {
+                            SecurityId = modifyOrder.SecurityId,
+                            EntryType = modifyOrder.IsBuySide ? OrderbookEntryType.Bid : OrderbookEntryType.Ask,
+                            EventTime = now, // Theoretically incorrect time.
+                            OrderCount = (uint)orderRecords.Count,
+                            Price = modifyOrder.Price,
+                            Quantity = (uint)orderRecords.Sum(x => x.Quantity),
+                            UpdateType = IncrementalOrderbookUpdateType.Change,
+                            IncrementalOrderbookUpdateEntries = new List<IncrementalOrderbookUpdateEntry>(orderRecords.Select(o => new IncrementalOrderbookUpdateEntry(o.OrderId, o.Quantity, o.TheoreticalQueuePosition))),
+                        };
+
+                        // send market data.
+
+                        return Task.FromResult(ExchangeResult.Null);
+                    }
+
                 }
             }
-            else return Task.FromResult(ExchangeResult.CreateExchangeResult(RejectionCreator.GenerateOrderCoreReject(modifyOrder, RejectionReason.OrderbookNotFound)));
+            else return Task.FromResult(new ExchangeResult(RejectionCreator.GenerateOrderCoreReject(modifyOrder, RejectionReason.OrderbookNotFound)));
         }
 
         public Task<ExchangeResult> ProcessOrderAsync(CancelOrder cancelOrder)
         {
+            DateTime now = DateTime.UtcNow;
             _textLogger.Information(nameof(TradingEngineServer), $"Handling CancelOrder: {cancelOrder}");
             if (_exchange.TryGetOrderbook(cancelOrder.SecurityId, out var orderbook))
             { 
                 if (RejectGenerator.TryRejectCancelOrder(cancelOrder, orderbook, out var rejection))
                 {
-                    return Task.FromResult(ExchangeResult.CreateExchangeResult(rejection));
+                    return Task.FromResult(new ExchangeResult(rejection));
                 }
                 else
                 {
-                    orderbook.RemoveOrder(cancelOrder);
-                    return Task.FromResult(ExchangeResult.CreateExchangeResult());
+                    if (orderbook.TryGetOrder(cancelOrder.OrderId, out OrderRecord orderRecord))
+                    {
+                        orderbook.RemoveOrder(cancelOrder);
+                        var orderRecords = orderbook.GetOrderbookSlice(orderRecord.Price).OrderRecords;
+                        var orderLevel = new IncrementalOrderbookUpdate
+                        {
+                            SecurityId = cancelOrder.SecurityId,
+                            EntryType = orderRecord.IsBuySide ? OrderbookEntryType.Bid : OrderbookEntryType.Ask,
+                            EventTime = now, // Theoretically incorrect time.
+                            OrderCount = (uint)orderRecords.Count,
+                            Price = orderRecord.Price,
+                            Quantity = (uint)orderRecords.Sum(x => x.Quantity),
+                            UpdateType = orderRecords.Count == 0 ? IncrementalOrderbookUpdateType.Delete : IncrementalOrderbookUpdateType.Change,
+                            IncrementalOrderbookUpdateEntries = new List<IncrementalOrderbookUpdateEntry>(orderRecords.Select(o => new IncrementalOrderbookUpdateEntry(o.OrderId, o.Quantity, o.TheoreticalQueuePosition))),
+                        };
+                    }
+                    else
+                    {
+                        return Task.FromResult(new ExchangeResult(RejectionCreator.GenerateOrderCoreReject(cancelOrder, RejectionReason.OrderNotFound)));
+                    }
+                    return Task.FromResult(ExchangeResult.Null);
                 }
             }
-            else return Task.FromResult(ExchangeResult.CreateExchangeResult(RejectionCreator.GenerateOrderCoreReject(cancelOrder, RejectionReason.OrderbookNotFound)));
+            else return Task.FromResult(new ExchangeResult(RejectionCreator.GenerateOrderCoreReject(cancelOrder, RejectionReason.OrderbookNotFound)));
         }
 
         public Task CancelAllAsync(List<IOrderStatus> orderStatuses)
@@ -109,10 +179,7 @@ namespace TradingEngineServer.Core
             _textLogger.Information(nameof(TradingEngineServer), $"Starting Trading Engine");
             using EdenOrderEntryServer oeServer = new EdenOrderEntryServer(this, _engineConfiguration.OrderEntryServer.Port);
             oeServer.Start();
-            while (!stoppingToken.IsCancellationRequested)
-            { }
-            _textLogger.Information(nameof(TradingEngineServer), $"Stopping Trading Engine");
-            return Task.CompletedTask;
+            return Task.Delay(Timeout.Infinite, stoppingToken);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace TradingEngineServer.Orderbook
             {
                 // Create a copy as to not allow the client to alter the state of the order.
                 var ord = entry.Current;
-                order = new OrderRecord(ord.OrderId, ord.CurrentQuantity, ord.IsBuySide,
+                order = new OrderRecord(ord.OrderId, ord.Price, ord.CurrentQuantity, ord.IsBuySide,
                     ord.Username, ord.SecurityId, UnknownTheoreticalQueuePosition);
                 return true;
             }
