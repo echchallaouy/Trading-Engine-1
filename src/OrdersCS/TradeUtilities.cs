@@ -38,19 +38,11 @@ namespace TradingEngineServer.Trades
                 ExecutionId = executionId,
             };
 
-            var trade = new Trade()
+            var trade = new Trade(eventTime, bidOrder.SecurityId, bidOrder.Price, fillQuantity, executionId, new List<TradeOrderIdEntry>()
             {
-                EventTime = eventTime,
-                SecurityId = bidOrder.SecurityId,
-                Price = bidOrder.Price,
-                Quantity = fillQuantity,
-                ExecutionId = executionId,
-                TradeOrderIdEntries = new List<TradeOrderIdEntries>()
-                {
-                    new TradeOrderIdEntries(bidOrder.OrderId, fillQuantity),
-                    new TradeOrderIdEntries(askOrder.OrderId, fillQuantity),
-                },
-            };
+                new TradeOrderIdEntry(bidOrder.OrderId, fillQuantity),
+                new TradeOrderIdEntry(askOrder.OrderId, fillQuantity),
+            });
 
             return new TradeResult(trade, buyFill, askFill);
         }

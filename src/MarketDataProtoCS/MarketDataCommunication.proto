@@ -1,0 +1,80 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+package Exodus.Proto.MarketData;
+
+service PublishMarketDataService
+{
+    // One-way message publication.
+    rpc PublishMarketData(MarketDataUpdate) returns (google.protobuf.Empty) { }
+}
+
+message IncrementalOrderbookUpdateEntry
+{
+    int64 OrderId = 1;
+    uint32 Quantity = 2;
+    uint32 TheoreticalQueuePosition = 3;
+}
+
+message IncrementalOrderbookUpdate
+{
+    enum OrderbookEntryType
+    {
+        Null = 0;
+        Bid = 1;
+        Ask = 2;
+    }
+
+    enum IncrementalOrderbookUpdateType
+    {
+        New = 0;
+        Change = 1;
+        Delete = 2;
+    }
+
+    google.protobuf.Timestamp EventTime = 1;
+    OrderbookEntryType EntryType = 2;
+    IncrementalOrderbookUpdateType UpdateType = 3;
+    int32 SecurityId = 4;
+    uint32 Quantity = 5;
+    int64 Price = 6;
+    uint32 OrderCount = 7;
+    repeated IncrementalOrderbookUpdateEntry IncrementalOrderbookUpdateEntries = 8;
+}
+
+message IncrementalOrderbookUpdates
+{
+    repeated IncrementalOrderbookUpdate IncrementalOrderbookUpdates = 1;
+}
+
+message TradeOrderIdEntry
+{
+    int64 OrderId = 1;
+    uint32 Quantity = 2;
+}
+
+message Trade
+{
+    google.protobuf.Timestamp EventTime = 1;
+    int32 SecurityId = 2;
+    int64 Price = 3;
+    uint32 Quantity = 4;
+    string ExecutionId = 5;
+    repeated TradeOrderIdEntry TradeOrderIdEntries = 6;
+}
+
+message Trades
+{
+    repeated Trade Trades = 1;
+}
+
+message MarketDataUpdate
+{
+    oneof MarketDataUpdateType
+    {
+        Trades Trades = 1;
+        IncrementalOrderbookUpdates IncrementalOrderbookUpdates = 2;
+    }
+}

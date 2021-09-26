@@ -4,5 +4,5 @@ using System.Text;
 
 namespace TradingEngineServer.Trades
 {
-    public record TradeOrderIdEntries(long OrderId, uint Quantity);
+    public record TradeOrderIdEntry(long OrderId, uint Quantity);
 }

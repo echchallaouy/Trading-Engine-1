@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace TradingEngineServer.OrderbookData
 {
+    // TODO: Someone please convert this from a class to a record.
     public class IncrementalOrderbookUpdate
     {
         public DateTime EventTime { get; set; }
