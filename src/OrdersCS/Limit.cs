@@ -45,7 +45,7 @@ namespace TradingEngineServer.Orders
             {
                 var currentOrder = headPointer.Current;
                 if (currentOrder.CurrentQuantity != 0)
-                    orderMetaData.Add(new OrderRecord(currentOrder.OrderId, currentOrder.CurrentQuantity,
+                    orderMetaData.Add(new OrderRecord(currentOrder.OrderId, currentOrder.Price, currentOrder.CurrentQuantity,
                         currentOrder.IsBuySide, currentOrder.Username, currentOrder.SecurityId, queuePosition++));
                 headPointer = headPointer.Next;
             }

@@ -13,41 +13,30 @@ namespace TradingEngineServer.Orderbook
         Fill,
     }
 
-    public sealed class ExchangeResult
+    public class ExchangeResult
     {
-        public static ExchangeResult CreateExchangeResult(Rejection rejection)
+        public static ExchangeResult Null { get; } = new ExchangeResult();
+
+        public ExchangeResult()
         {
-            return new ExchangeResult()
-            {
-                ExchangeInformationType = ExchangeInformationType.Rejection,
-                Rejection = rejection,
-            };
+            ExchangeInformationType = ExchangeInformationType.None;
         }
 
-        public static ExchangeResult CreateExchangeResult(List<Fill> fills)
+        public ExchangeResult(Rejection rejection)
         {
-            return new ExchangeResult()
-            {
-                ExchangeInformationType = ExchangeInformationType.Fill,
-                Fills = fills,
-            };
+            ExchangeInformationType = ExchangeInformationType.Rejection;
+            Rejection = rejection;
         }
 
-        public static ExchangeResult CreateExchangeResult()
+        public ExchangeResult(List<Fill> fills)
         {
-            return new ExchangeResult()
-            {
-                ExchangeInformationType = ExchangeInformationType.None,
-            };
+            ExchangeInformationType = ExchangeInformationType.Fill;
+            Fills = fills;
         }
-
-        // PRIVATE CONSTRUCTOR //
-        private ExchangeResult()
-        { }
 
         // FIELDS // 
         public ExchangeInformationType ExchangeInformationType { get; private set; }
         public List<Fill> Fills { get; private set; }
-        public Rejection Rejection { get; set; }
+        public Rejection Rejection { get; private set; }
     }
 }
