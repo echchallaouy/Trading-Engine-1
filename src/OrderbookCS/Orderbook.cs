@@ -38,7 +38,8 @@ namespace TradingEngineServer.Orderbook
             if (_orders.TryGetValue(modifyOrder.OrderId, out var obe))
             {
                 RemoveOrder(modifyOrder.ToCancelOrder(), obe, _orders);
-                AddOrder(modifyOrder.ToNewOrder(), obe.ParentLimit, modifyOrder.IsBuySide ? _bidLimits : _askLimits, _orders);
+                var newOrder = modifyOrder.ToNewOrder();
+                AddOrder(newOrder, obe.ParentLimit, newOrder.IsBuySide ? _bidLimits : _askLimits, _orders);
             }
         }
 
