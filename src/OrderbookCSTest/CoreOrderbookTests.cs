@@ -58,6 +58,22 @@ namespace OrderbookCSTest
         }
 
         [TestMethod]
+        public void Orderbook_RemoveNonExistantOrder_Noop()
+        {
+            // Nothing happens when we try to remove an order that doesn't exist.
+            // 1
+            Orderbook ob = new Orderbook(default);
+            ob.RemoveOrder(new CancelOrder(new OrderCore(0, "Test", 1)));
+
+            // 2
+            int actual = ob.Count;
+            const int expected = 0;
+
+            // 3
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void Orderbook_AddOrderThenModify_Success()
         {
             // 1
@@ -98,6 +114,30 @@ namespace OrderbookCSTest
             // 3
             Assert.AreEqual(expected, actual);
             Assert.AreEqual(orderId, lastOrder.Current.OrderId);
+        }
+
+        [TestMethod]
+        public void Orderbook_ModifyOrderSwitchSides_Success()
+        {
+            // 1
+            const long orderId = 0;
+            const uint modifyOrderQuantity = 5;
+            const bool IsBuySide = false;
+            Orderbook ob = new Orderbook(default);
+            ob.AddOrder(new Order(new OrderCore(orderId, "Test", 1), 1_000, 10, true));
+            ob.AddOrder(new Order(new OrderCore(1, "Person", 1), 1_000, 10, true));
+            ob.ChangeOrder(new ModifyOrder(new OrderCore(orderId, "Test", 1), 1_000, modifyOrderQuantity, IsBuySide)); // Modified order should be moved to back
+
+            // 2
+            int actual = ob.Count;
+            const int expected = 2;
+            var buyOrders = ob.GetAskOrders();
+            var lastOrder = buyOrders[^1];
+
+            // 3
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(orderId, lastOrder.Current.OrderId);
+            Assert.AreEqual(IsBuySide, lastOrder.Current.IsBuySide);
         }
 
         [TestMethod]
