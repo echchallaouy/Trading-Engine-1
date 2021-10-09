@@ -125,14 +125,13 @@ namespace OrderbookCSTest
             const bool IsBuySide = false;
             Orderbook ob = new Orderbook(default);
             ob.AddOrder(new Order(new OrderCore(orderId, "Test", 1), 1_000, 10, true));
-            ob.AddOrder(new Order(new OrderCore(1, "Person", 1), 1_000, 10, true));
-            ob.ChangeOrder(new ModifyOrder(new OrderCore(orderId, "Test", 1), 1_000, modifyOrderQuantity, IsBuySide)); // Modified order should be moved to back
+            ob.ChangeOrder(new ModifyOrder(new OrderCore(orderId, "Test", 1), 1_000, modifyOrderQuantity, IsBuySide)); // Switches side
 
             // 2
             int actual = ob.Count;
-            const int expected = 2;
-            var buyOrders = ob.GetAskOrders();
-            var lastOrder = buyOrders[^1];
+            const int expected = 1;
+            var askOrders = ob.GetAskOrders();
+            var lastOrder = askOrders[^1];
 
             // 3
             Assert.AreEqual(expected, actual);
