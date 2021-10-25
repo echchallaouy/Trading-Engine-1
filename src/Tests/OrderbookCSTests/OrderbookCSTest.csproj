@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OrderbookDataCS\OrderbookDataCS.csproj" />
+    <ProjectReference Include="..\..\Libraries\OrderEntry\OrderbookCS\OrderbookCS.csproj" />
   </ItemGroup>
 
 </Project>
