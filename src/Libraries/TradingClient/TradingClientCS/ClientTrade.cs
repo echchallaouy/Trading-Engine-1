@@ -4,5 +4,5 @@ using System.Text;
 
 namespace TradingClient.Core
 {
-    public record ClientTrade();
+    public class ClientTrade { }
 }
