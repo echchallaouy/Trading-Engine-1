@@ -134,12 +134,12 @@ namespace TradingEngineServer.OrderEntryCommunicationServer
         public async Task WaitForClientExceptionAsync(CancellationToken token)
         {
             await _clientExceptionSetEvent.WaitAsync(token).ConfigureAwait(false);
-            throw _clientException;
+            throw _clientException.Exception;
         }
 
         private void SetClientException(Exception exception)
         {
-            Interlocked.CompareExchange(ref _clientException, null, exception);
+            _clientException = new ExceptionHolder(exception);
             _clientExceptionSetEvent.Set();
         }
 
@@ -161,6 +161,6 @@ namespace TradingEngineServer.OrderEntryCommunicationServer
         private readonly List<IOrderStatus> _activeOrders = new List<IOrderStatus>();
         private readonly AsyncReaderWriterLock _activeOrdersLock = new AsyncReaderWriterLock();
         private readonly AsyncManualResetEvent _clientExceptionSetEvent = new AsyncManualResetEvent(false);
-        private Exception _clientException = null;
+        private IExceptionHolder _clientException = new ExceptionHolder();
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TradingEngineServer.OrderbookData;
+using TradingEngineServer.Orders;
 using TradingEngineServer.Trades;
 
 namespace TradingEngineServer.MarketData
@@ -17,7 +18,22 @@ namespace TradingEngineServer.MarketData
 
         }
 
+        public Task PublishIncrementalOrderbookUpdateAsync(IncrementalOrderbookUpdate incrementalOrderbookUpdates, CancellationToken token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PublishIncrementalOrderbookUpdateAsync(OrderbookSlice obs, CancellationToken token)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task PublishIncrementalOrderbookUpdatesAsync(List<IncrementalOrderbookUpdate> incrementalOrderbookUpdates, CancellationToken token)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PublishTradeAsync(Trade trades, CancellationToken token)
         {
             throw new NotImplementedException();
         }
