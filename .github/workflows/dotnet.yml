@@ -21,7 +21,22 @@ jobs:
         dotnet-version: 3.1.x # We are targeting netcoreapp3.1.
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
+    - name: Build_TradingEngine
       run: dotnet build TradingEngine.sln --no-restore
-    - name: Test
+    - name: Test_TradingEngine
       run: dotnet test TradingEngine.sln --no-build --verbosity normal
+      run:
+        working-directory: ../TradingClient_Application
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x # We are targeting netcoreapp3.1.
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build_TradingClient
+      run: dotnet build ConsoleTradingClient.sln --no-restore
+    - name: Test_TradingEngine
+      run: dotnet test ConsoleTradingClient.sln --no-build --verbosity normal
+
