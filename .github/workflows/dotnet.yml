@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./src/TradingEngine
+        working-directory: ./src/TradingEngine_Application
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
