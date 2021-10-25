@@ -1,4 +1,4 @@
-name: .NET
+name: .NET Console Trading Client
 
 on:
   push:
