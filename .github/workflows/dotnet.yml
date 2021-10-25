@@ -26,7 +26,7 @@ jobs:
     - name: Test_TradingEngine
       run: dotnet test TradingEngine.sln --no-build --verbosity normal
       run:
-        working-directory: ../TradingClient_Application
+        working-directory: ./src/TradingClient_Application
     - name: Restore dependencies
       run: dotnet restore
     - name: Build_TradingClient
